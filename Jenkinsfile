@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'b1', url: 'https://github.com/yourusername/yourrepo.git'
+                git branch: 'b1', url: 'https://github.com/pranav1468/ML-OPS.git'
             }
         }
 
@@ -24,13 +24,13 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
+                    usernameVariable: 'pranav9752',
+                    passwordVariable: 'Pranav@9752'
                 )]) {
                     sh """
                     docker login -u $DOCKER_USER -p $DOCKER_PASS
-                    docker tag gradient $DOCKER_USER/gradient:jenkins
-                    docker push $DOCKER_USER/gradient:jenkins
+                    docker tag gradient pranav9752/gradient:jenkins
+                    docker push pranav9752/gradient:jenkins
                     """
                 }
             }
