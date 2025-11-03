@@ -1,3 +1,4 @@
+# this is a gradient descent example
 import numpy as np
 
 def gradient_descent(x,y):
