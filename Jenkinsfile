@@ -1,13 +1,12 @@
 pipeline {
+
     agent any
 
-    stages {
+    options {
+        skipDefaultCheckout(false)
+    }
 
-        stage('Checkout') {
-            steps {
-                git branch: 'b1', url: 'https://github.com/pranav1468/ML-OPS.git'
-            }
-        }
+    stages {
 
         stage('Build Docker Image') {
             steps {
@@ -29,10 +28,10 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     sh """
-                        echo "Logging into DockerHub..."
-                        docker login -u $DOCKER_USER -p $DOCKER_PASS
-                        docker tag gradient $DOCKER_USER/gradient:jenkins
-                        docker push $DOCKER_USER/gradient:jenkins
+                    echo "Logging into DockerHub..."
+                    docker login -u $DOCKER_USER -p $DOCKER_PASS
+                    docker tag gradient $DOCKER_USER/gradient:jenkins
+                    docker push $DOCKER_USER/gradient:jenkins
                     """
                 }
             }
