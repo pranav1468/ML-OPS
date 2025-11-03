@@ -1,36 +1,43 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "pranav9752/gradient"
+    }
+
     stages {
-        stage('Checkout') {
+        
+        stage('Checkout Code') {
             steps {
-                git branch: 'b1', url: 'https://github.com/yourusername/yourrepo.git'
+                git branch: 'b1',
+                    url: 'https://github.com/pranav1468/ML-OPS.git',
+                    credentialsId: 'github-creds'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t gradient .'
+                sh "docker build -t gradient ."
             }
         }
 
-        stage('Run Container') {
+        stage('Run Container Test') {
             steps {
-                sh 'docker run gradient'
+                sh "docker run --rm gradient"
             }
         }
 
-        stage('Push Image to DockerHub') {
+        stage('Login & Push to DockerHub') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'dockerhub-creds',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
+                    usernameVariable: 'USER',
+                    passwordVariable: 'PASS'
                 )]) {
                     sh """
-                    docker login -u $DOCKER_USER -p $DOCKER_PASS
-                    docker tag gradient $DOCKER_USER/gradient:jenkins
-                    docker push $DOCKER_USER/gradient:jenkins
+                    echo $PASS | docker login -u $USER --password-stdin
+                    docker tag gradient $IMAGE_NAME:jenkins
+                    docker push $IMAGE_NAME:jenkins
                     """
                 }
             }
