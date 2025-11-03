@@ -1,4 +1,5 @@
 # this is a gradient descent example
+# this is a ML-OPS file
 import numpy as np
 
 def gradient_descent(x,y):
